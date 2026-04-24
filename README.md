@@ -25,14 +25,16 @@ These skills are designed to work with the SE Ranking MCP server, but they docum
 
 ## Install
 
-### Option 1: Claude Code plugin (recommended)
+### Option 1: Claude Code plugin marketplace (recommended)
+
+This repo is a Claude Code plugin marketplace. Add the marketplace once, install the plugin, and Claude Code handles updates for you.
 
 ```bash
-# Clone the repo
-git clone https://github.com/seranking/seranking-mcp-skills.git
+# Add the SE Ranking marketplace
+/plugin marketplace add seranking/seranking-mcp-skills
 
-# Test the plugin locally
-claude --plugin-dir ./seranking-mcp-skills
+# Install the plugin
+/plugin install seranking-mcp-skills@seranking
 ```
 
 Skills are namespaced under the plugin. Trigger them with:
@@ -42,32 +44,42 @@ Skills are namespaced under the plugin. Trigger them with:
 /seranking-mcp-skills:ai-search-share-of-voice
 ```
 
-To install permanently, see Claude Code's [plugin marketplace docs](https://code.claude.com/docs/en/plugin-marketplaces).
+To update the marketplace later: `/plugin marketplace update seranking`.
 
-### Option 2: Copy individual skills
+### Option 2: Local plugin development mode
+
+```bash
+# Clone the repo
+git clone https://github.com/seranking/seranking-mcp-skills.git
+
+# Load the plugin directly from its subdirectory
+claude --plugin-dir ./seranking-mcp-skills/plugins/seranking-mcp-skills
+```
+
+### Option 3: Copy individual skills
 
 ```bash
 # Clone the repo
 git clone https://github.com/seranking/seranking-mcp-skills.git
 
 # Copy a single skill to your user-scoped skills directory
-cp -r seranking-mcp-skills/skills/content-brief ~/.claude/skills/
+cp -r seranking-mcp-skills/plugins/seranking-mcp-skills/skills/content-brief ~/.claude/skills/
 
 # Or copy all of them
-cp -r seranking-mcp-skills/skills/* ~/.claude/skills/
+cp -r seranking-mcp-skills/plugins/seranking-mcp-skills/skills/* ~/.claude/skills/
 ```
 
 Skills copied this way are not namespaced. Trigger them directly by description match.
 
-### Option 3: Project-scoped install
+### Option 4: Project-scoped install
 
 Copy into a specific project's `.claude/skills/` directory to make the skills available only when Claude Code runs in that project.
 
 ```bash
-cp -r seranking-mcp-skills/skills/* /path/to/your/project/.claude/skills/
+cp -r seranking-mcp-skills/plugins/seranking-mcp-skills/skills/* /path/to/your/project/.claude/skills/
 ```
 
-### Option 4: Claude API
+### Option 5: Claude API
 
 Upload any skill as a zip to the Claude API via the `/v1/skills` endpoints. See [Anthropic's Skills API guide](https://platform.claude.com/docs/en/build-with-claude/skills-guide).
 
@@ -95,22 +107,26 @@ The skills chain naturally. A typical agency workflow:
 ```
 seranking-mcp-skills/
 ├── .claude-plugin/
-│   └── plugin.json                    # Claude Code plugin manifest
-├── skills/
-│   ├── content-brief/
-│   │   └── SKILL.md
-│   ├── ai-search-share-of-voice/
-│   │   └── SKILL.md
-│   ├── website-audit-change-report/
-│   │   └── SKILL.md
-│   ├── backlink-gap/
-│   │   └── SKILL.md
-│   ├── keyword-cluster-planner/
-│   │   └── SKILL.md
-│   ├── competitor-gap-analysis/
-│   │   └── SKILL.md
-│   └── agency-landing-page/
-│       └── SKILL.md
+│   └── marketplace.json               # Claude Code plugin marketplace manifest
+├── plugins/
+│   └── seranking-mcp-skills/
+│       ├── .claude-plugin/
+│       │   └── plugin.json            # Plugin manifest
+│       └── skills/
+│           ├── content-brief/
+│           │   └── SKILL.md
+│           ├── ai-search-share-of-voice/
+│           │   └── SKILL.md
+│           ├── website-audit-change-report/
+│           │   └── SKILL.md
+│           ├── backlink-gap/
+│           │   └── SKILL.md
+│           ├── keyword-cluster-planner/
+│           │   └── SKILL.md
+│           ├── competitor-gap-analysis/
+│           │   └── SKILL.md
+│           └── agency-landing-page/
+│               └── SKILL.md
 ├── examples/                           # Sample runs (coming soon)
 ├── LICENSE
 └── README.md
