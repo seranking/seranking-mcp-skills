@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file. Format base
 - Credit-budget notes in `competitor-gap-analysis` and `keyword-cluster-planner`.
 - Form-endpoint note in `agency-landing-page` output.
 
+### Fixed
+- `content-brief` and `competitor-gap-analysis` now document the `DATA_getDomainCompetitors` overflow: that endpoint has no upstream `limit`/`offset` and returns ~60KB, so the MCP harness writes it to a file. Skills now instruct: read the file, parse `{data: [...]}`, sort by `common_keywords` desc, take top 5.
+
 ### Removed
 - Empty `examples/` directory (advertised but unpopulated — returns in v1.0.0).
 

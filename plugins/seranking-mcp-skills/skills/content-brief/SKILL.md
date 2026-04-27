@@ -22,6 +22,7 @@ Turn a domain plus a topic intent into a complete content editor brief: target k
 2. **Competitor discovery** `DATA_getDomainCompetitors`
    - Identify the top 5 organic competitors by shared keywords in the target market.
    - Save a one-line positioning note per competitor.
+   - **Note:** the upstream API does not support `limit`/`offset`, so this call returns the full set (~60KB for popular domains) and the MCP harness writes it to a file. Read that file path, parse the `{data: [...]}` JSON, sort by `common_keywords` desc, and take the top 5.
 
 3. **Keyword gap analysis** `DATA_getDomainKeywordsComparison`
    - Pull keywords the competitors rank for that the target domain does not.

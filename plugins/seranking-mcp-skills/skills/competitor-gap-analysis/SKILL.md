@@ -17,6 +17,7 @@ Identify the specific keywords your competitors rank for in the top 20 that your
 1. **Validate or discover competitors** `DATA_getDomainCompetitors`
    - If the user did not provide competitors, pull the top 5 organic competitors for the target in the target market.
    - Surface the list to the user and ask them to confirm or override before proceeding.
+   - **Note:** the upstream API does not support `limit`/`offset`, so this call returns the full set (~60KB for popular domains) and the MCP harness writes it to a file. Read that file path, parse the `{data: [...]}` JSON, sort by `common_keywords` desc, and take the top 5.
 
 2. **Pull competitor keyword sets** `DATA_getDomainKeywords`
    - For each competitor, pull keywords where they rank in the top 20 of the target country.
