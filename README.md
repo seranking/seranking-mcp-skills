@@ -1,8 +1,8 @@
-# SE Ranking MCP Skills
+# Claude SEO Skills
 
-Production-ready [Claude Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) for the [SE Ranking remote MCP](https://seranking.com/api/integrations/mcp). Each skill turns raw API data into a finished SEO deliverable — content briefs, page intelligence, structured data, drift monitoring, SXO diagnostics, competitive analysis, and more.
+Production-ready [Claude Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) for SEO, powered by the [SE Ranking remote MCP](https://seranking.com/api/integrations/mcp). Each skill turns raw API data into a finished SEO deliverable — content briefs, AI Search share of voice, page intelligence, structured data, drift monitoring, SXO diagnostics, competitive analysis, and more.
 
-These skills are designed to work with the SE Ranking MCP server, but they document every API call explicitly so they can also be adapted to other SEO data providers.
+These Claude Skills are designed to work with the SE Ranking MCP server, but they document every API call explicitly so they can also be adapted to other SEO data providers.
 
 ## Skills
 
@@ -42,17 +42,17 @@ This repo is a Claude Code plugin marketplace. Add the marketplace once, install
 
 ```bash
 # Add the SE Ranking marketplace
-/plugin marketplace add seranking/seranking-mcp-skills
+/plugin marketplace add seranking/seo-skills
 
 # Install the plugin
-/plugin install seranking-mcp-skills@seranking
+/plugin install seo-skills@seranking
 ```
 
 Skills are namespaced under the plugin. Trigger them with:
 
 ```
-/seranking-mcp-skills:seo-content-brief
-/seranking-mcp-skills:seo-ai-search-share-of-voice
+/seo-skills:seo-content-brief
+/seo-skills:seo-ai-search-share-of-voice
 ```
 
 To update the marketplace later: `/plugin marketplace update seranking`.
@@ -61,23 +61,23 @@ To update the marketplace later: `/plugin marketplace update seranking`.
 
 ```bash
 # Clone the repo
-git clone https://github.com/seranking/seranking-mcp-skills.git
+git clone https://github.com/seranking/seo-skills.git
 
 # Load the plugin directly from the cloned directory
-claude --plugin-dir ./seranking-mcp-skills
+claude --plugin-dir ./seo-skills
 ```
 
 ### Option 3: Copy individual skills
 
 ```bash
 # Clone the repo
-git clone https://github.com/seranking/seranking-mcp-skills.git
+git clone https://github.com/seranking/seo-skills.git
 
 # Copy a single skill to your user-scoped skills directory
-cp -r seranking-mcp-skills/skills/seo-content-brief ~/.claude/skills/
+cp -r seo-skills/skills/seo-content-brief ~/.claude/skills/
 
 # Or copy all of them
-cp -r seranking-mcp-skills/skills/* ~/.claude/skills/
+cp -r seo-skills/skills/* ~/.claude/skills/
 ```
 
 Skills copied this way are not namespaced. Trigger them directly by description match.
@@ -87,7 +87,7 @@ Skills copied this way are not namespaced. Trigger them directly by description 
 Copy into a specific project's `.claude/skills/` directory to make the skills available only when Claude Code runs in that project.
 
 ```bash
-cp -r seranking-mcp-skills/skills/* /path/to/your/project/.claude/skills/
+cp -r seo-skills/skills/* /path/to/your/project/.claude/skills/
 ```
 
 ### Option 5: Claude API
@@ -115,7 +115,7 @@ The skills chain naturally. A typical agency workflow:
 ## Repository layout
 
 ```
-seranking-mcp-skills/
+seo-skills/
 ├── .claude-plugin/
 │   ├── marketplace.json                # Claude Code marketplace manifest
 │   └── plugin.json                     # Plugin manifest

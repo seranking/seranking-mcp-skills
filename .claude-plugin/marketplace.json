@@ -6,27 +6,31 @@
   },
   "metadata": {
     "description": "Official Claude Code plugin marketplace from SE Ranking. Plugins built on top of the SE Ranking SEO Data API MCP server.",
-    "version": "1.0.1"
+    "version": "2.0.0"
   },
   "plugins": [
     {
-      "name": "seranking-mcp-skills",
+      "name": "seo-skills",
       "source": "./",
-      "description": "Production SEO skills for the SE Ranking MCP server. Keyword research, content briefing, page intelligence, technical and content audits, structured data, drift monitoring, SXO diagnostics, competitive analysis, paid search, AI-search optimization, sitemap analysis, subdomain mapping, and content opportunity mining.",
-      "version": "1.0.1",
+      "description": "Claude SEO Skills for the SE Ranking MCP server. Keyword research, content briefing, page intelligence, technical and content audits, structured data, drift monitoring, SXO diagnostics, competitive analysis, paid search, AI-search optimization, sitemap analysis, subdomain mapping, and content opportunity mining.",
+      "version": "2.0.0",
       "author": {
         "name": "SE Ranking",
         "email": "api@seranking.com"
       },
-      "homepage": "https://github.com/seranking/seranking-mcp-skills",
-      "repository": "https://github.com/seranking/seranking-mcp-skills",
+      "homepage": "https://github.com/seranking/seo-skills",
+      "repository": "https://github.com/seranking/seo-skills",
       "license": "MIT",
       "category": "seo",
       "tags": [
         "seo",
         "mcp",
         "se-ranking",
+        "claude",
+        "claude-code",
+        "claude-skills",
         "agent-skills",
+        "anthropic",
         "content-brief",
         "ai-search",
         "keyword-research",
@@ -40,6 +44,7 @@
         "seo",
         "mcp",
         "se-ranking",
+        "claude-skills",
         "content-brief",
         "ai-search",
         "keyword-research",

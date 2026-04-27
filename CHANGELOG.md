@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. Format based on Keep a Changelog.
 
+## [2.0.0] — 2026-04-27
+
+Repository rebrand for discoverability. The plugin is now `seo-skills` and the README leads with "Claude SEO Skills"; SE Ranking branding stays in the org (`seranking/seo-skills`), descriptions, and the underlying MCP context.
+
+### Changed (breaking)
+- **Plugin renamed** `seranking-mcp-skills` → `seo-skills`. Slash-command namespace flips from `/seranking-mcp-skills:seo-*` to `/seo-skills:seo-*`. Marketplace install command becomes `/plugin marketplace add seranking/seo-skills` and `/plugin install seo-skills@seranking`.
+- **GitHub repo renamed** `seranking/seranking-mcp-skills` → `seranking/seo-skills`. GitHub auto-redirects the old URL for clones, links, and the marketplace registry, but anyone with the old slug hardcoded outside redirect-aware tooling should update.
+- **README H1** `# SE Ranking MCP Skills` → `# Claude SEO Skills`. Lead paragraph repositioned around "Claude Agent Skills for SEO".
+- **GitHub topics** added (previously empty): `claude`, `claude-code`, `claude-skills`, `anthropic`, `agent-skills`, `mcp`, `mcp-server`, `seo`, `seo-tools`, `seranking`.
+- **GitHub description** rewritten to lead with the target query.
+- All three version strings bumped to 2.0.0.
+
 ## [1.0.1] — 2026-04-27
 
 Validation-driven patch. A v1.0.0 smoke test against the live SE Ranking MCP turned up four issues; this release fixes them.
