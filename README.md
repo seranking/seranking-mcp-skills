@@ -18,6 +18,9 @@ These skills are designed to work with the SE Ranking MCP server, but they docum
 | [`seo-schema`](skills/seo-schema/SKILL.md) | JSON-LD detect, validate, generate. Six bundled templates (Article / Product / LocalBusiness / FAQPage / HowTo / BreadcrumbList) | "schema markup", "structured data", "JSON-LD", "rich results", "schema validation" |
 | [`seo-drift`](skills/seo-drift/SKILL.md) | Git for SEO — baseline, compare, history. Severity-coded regression report across authority, traffic, keywords, backlinks, page fingerprint | "SEO drift", "did anything break", "deployment check", "baseline this site", "SEO regression" |
 | [`seo-sxo`](skills/seo-sxo/SKILL.md) | Read SERPs backwards to find page-type mismatches. Scores the page from 4 personas; produces a wireframe for the SERP-winning page type | "why isn't this page ranking", "SXO", "page type mismatch", "intent mismatch", "search experience" |
+| [`seo-technical-audit`](skills/seo-technical-audit/SKILL.md) | One-shot technical audit: crawlability, indexability, security, mobile, structured data, JS rendering. Top-10 fix list ranked by impact × effort | "technical audit", "site audit", "audit my site", "crawl issues", "indexation issues" |
+| [`seo-content-audit`](skills/seo-content-audit/SKILL.md) | E-E-A-T (60-item) + CITE (30-item) audit for existing content with publish / publish-with-fixes / no-publish verdict and citation-readiness analysis | "content quality audit", "E-E-A-T check", "is this content good", "review this article", "AI search readiness" |
+| [`seo-sitemap`](skills/seo-sitemap/SKILL.md) | Compare a domain's XML sitemap to the most recent SE Ranking audit. Surfaces missing-from-sitemap, orphans, broken entries, lastmod issues | "sitemap analysis", "check my sitemap", "missing pages", "orphan pages", "sitemap health" |
 
 ## Prerequisites
 
@@ -132,9 +135,18 @@ seranking-mcp-skills/
 │   ├── seo-drift/
 │   │   ├── SKILL.md
 │   │   └── references/drift-thresholds.md
-│   └── seo-sxo/
-│       ├── SKILL.md
-│       └── references/                 # page-type patterns + persona rubrics
+│   ├── seo-sxo/
+│   │   ├── SKILL.md
+│   │   └── references/                 # page-type patterns + persona rubrics
+│   ├── seo-technical-audit/
+│   │   ├── SKILL.md
+│   │   └── references/severity-mapping.md
+│   ├── seo-content-audit/
+│   │   ├── SKILL.md
+│   │   ├── references/                 # core-eeat (60 items) + cite (30 items)
+│   │   └── templates/verdict.md
+│   └── seo-sitemap/
+│       └── SKILL.md
 ├── examples/                           # Real, end-to-end runs against public targets
 │   └── seo-ai-search-share-of-voice-wix-com-20260427/
 ├── CHANGELOG.md

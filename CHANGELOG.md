@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. Format based on Keep a Changelog.
 
+## [0.5.0] — 2026-04-27
+
+### Added
+- **`seo-technical-audit`** — focused one-shot technical audit. Crawlability, indexability, security, mobile, structured data, JS rendering. Reuses an existing SE Ranking audit when present (cheap), creates one when needed (expensive — confirms with user). Severity × effort prioritisation in `references/severity-mapping.md`. Top-10 fix list as the deliverable.
+- **`seo-content-audit`** — E-E-A-T + CITE quality audit for existing content. 60-item E-E-A-T rubric (Experience / Expertise / Authoritativeness / Trustworthiness, 15 each) at `references/core-eeat.md`; 30-item CITE rubric (Clear answer / Include stats / Timestamp / Entity authority) at `references/cite.md`. Veto checks (3 each) gate publication. Output: PUBLISH / PUBLISH WITH FIXES / NO PUBLISH verdict + top 5 fixes.
+- **`seo-sitemap`** — XML sitemap analysis vs the most recent SE Ranking audit. Surfaces missing-from-sitemap, orphans-from-sitemap, broken sitemap entries, lastmod issues. Predecessor: `seo-technical-audit` (provides the audit baseline).
+
+### Changed
+- README skills table extended to 13 rows; repo-layout block updated for new skill folders.
+- All three version strings bumped to 0.5.0.
+
 ## [0.4.0] — 2026-04-27
 
 ### Added
