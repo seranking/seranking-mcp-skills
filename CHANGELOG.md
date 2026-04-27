@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. Format base
 
 ### Changed
 - Standardized output folder slugs to `{skill-slug}-{target-slug}-{YYYYMMDD}/` across all skills.
-- Removed PROJECT_API_TOKEN mention from README. The 7 current skills only need a single Data API token; the README no longer suggests otherwise.
+- Pointed README at the SE Ranking remote MCP (`https://seranking.com/api/integrations/mcp`). Install is now `claude mcp add --transport http se-ranking https://api.seranking.com/mcp` + OAuth sign-in. Removed the `DATA_API_TOKEN` env-var requirement and the `PROJECT_API_TOKEN` mention — OAuth covers auth, and one connection covers every skill.
 
 ### Added
 - Rate-limit tip in `agency-landing-page` for parity with other skills.
