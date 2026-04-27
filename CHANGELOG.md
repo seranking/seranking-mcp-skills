@@ -18,7 +18,10 @@ All notable changes to this project will be documented in this file. Format base
 - `content-brief` and `competitor-gap-analysis` now document the `DATA_getDomainCompetitors` overflow: that endpoint has no upstream `limit`/`offset` and returns ~60KB, so the MCP harness writes it to a file. Skills now instruct: read the file, parse `{data: [...]}`, sort by `common_keywords` desc, take top 5.
 
 ### Removed
-- Empty `examples/` directory (advertised but unpopulated — returns in v1.0.0).
+- Empty `examples/` directory placeholder (replaced with a real example run, see Added).
+
+### Examples
+- Added [`examples/ai-search-share-of-voice-wix-com-20260427/`](examples/ai-search-share-of-voice-wix-com-20260427/) — an end-to-end run of `ai-search-share-of-voice` against Wix vs Weebly / Hostinger / Squarespace / Webflow. Includes leaderboard, heatmap, prompt samples, topic cluster ownership analysis, and a finished `REPORT.md`. Snapshot dated 2026-04-27.
 
 ## [0.1.0] — 2026-04-24
 

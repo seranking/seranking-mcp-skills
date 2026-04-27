@@ -126,11 +126,14 @@ seranking-mcp-skills/
 │           │   └── SKILL.md
 │           └── agency-landing-page/
 │               └── SKILL.md
+├── examples/                           # Real, end-to-end runs against public targets
+│   └── ai-search-share-of-voice-wix-com-20260427/
+├── CHANGELOG.md
 ├── LICENSE
 └── README.md
 ```
 
-Every skill writes its output to a folder named `{skill-slug}-{target-slug}-{YYYYMMDD}/` (e.g., `content-brief-example-com-20260427/`). The date stamp keeps re-runs non-destructive and makes it easy to diff outputs over time.
+Every skill writes its output to a folder named `{skill-slug}-{target-slug}-{YYYYMMDD}/` (e.g., `content-brief-example-com-20260427/`). The date stamp keeps re-runs non-destructive and makes it easy to diff outputs over time. Browse [`examples/`](./examples/) to see what a finished run looks like before installing.
 
 ## Rate limits and costs
 
