@@ -1,6 +1,6 @@
 # SE Ranking MCP Skills
 
-Production-ready [Claude Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) for the [SE Ranking SEO Data API MCP server](https://github.com/seranking/seo-data-api-mcp-server). Each skill turns raw API data into a finished SEO deliverable: a content brief, a share-of-voice report, an audit change log, a backlink prospect list, a cluster plan, a gap analysis, a demand-gen landing page.
+Production-ready [Claude Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) for the [SE Ranking remote MCP](https://seranking.com/api/integrations/mcp). Each skill turns raw API data into a finished SEO deliverable: a content brief, a share-of-voice report, an audit change log, a backlink prospect list, a cluster plan, a gap analysis, a demand-gen landing page.
 
 These skills are designed to work with the SE Ranking MCP server, but they document every API call explicitly so they can also be adapted to other SEO data providers.
 
@@ -19,9 +19,8 @@ These skills are designed to work with the SE Ranking MCP server, but they docum
 ## Prerequisites
 
 - [Claude Code](https://code.claude.com), the Claude API, or [Claude.ai](https://claude.ai) with Skills enabled.
-- The [SE Ranking MCP server](https://github.com/seranking/seo-data-api-mcp-server) installed and configured.
-- A `DATA_API_TOKEN` set in your environment. Some skills also benefit from a `PROJECT_API_TOKEN` if you want to use project-scoped tools (rank tracking, AIRT prompts).
-- [Sign up for SE Ranking API access](https://seranking.com/api.html) if you don't already have a token.
+- The [SE Ranking remote MCP](https://seranking.com/api/integrations/mcp) connected to your Claude workspace. In Claude Code: `claude mcp add --transport http se-ranking https://api.seranking.com/mcp`, then run `/mcp` in a session and sign in via OAuth — no API token to manage.
+- An SE Ranking account with API access enabled. [Sign up](https://seranking.com/api.html) if you don't already have one.
 
 ## Install
 
@@ -127,10 +126,14 @@ seranking-mcp-skills/
 │           │   └── SKILL.md
 │           └── agency-landing-page/
 │               └── SKILL.md
-├── examples/                           # Sample runs (coming soon)
+├── examples/                           # Real, end-to-end runs against public targets
+│   └── ai-search-share-of-voice-wix-com-20260427/
+├── CHANGELOG.md
 ├── LICENSE
 └── README.md
 ```
+
+Every skill writes its output to a folder named `{skill-slug}-{target-slug}-{YYYYMMDD}/` (e.g., `content-brief-example-com-20260427/`). The date stamp keeps re-runs non-destructive and makes it easy to diff outputs over time. Browse [`examples/`](./examples/) to see what a finished run looks like before installing.
 
 ## Rate limits and costs
 
@@ -153,7 +156,7 @@ This repo is the official Skills catalogue for the SE Ranking MCP server. We wel
 
 - SE Ranking: https://seranking.com
 - SE Ranking API: https://seranking.com/api.html
-- SE Ranking MCP server: https://github.com/seranking/seo-data-api-mcp-server
+- SE Ranking remote MCP: https://seranking.com/api/integrations/mcp
 - Claude Agent Skills: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
 - Claude Code Plugins: https://code.claude.com/docs/en/plugins
 

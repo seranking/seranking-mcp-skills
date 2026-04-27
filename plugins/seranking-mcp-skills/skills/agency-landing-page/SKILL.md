@@ -42,10 +42,10 @@ Produce a production-ready landing page for an SEO agency offering a free audit 
 
 ## Output format
 
-Create a folder `landing-{agency-slug}/` with:
+Create a folder `agency-landing-page-{target-slug}-{YYYYMMDD}/` with:
 
 ```
-landing-{agency-slug}/
+agency-landing-page-{target-slug}-{YYYYMMDD}/
 ├── 01-niche-data.md      # the real numbers pulled in step 1
 ├── 02-pain-points.md     # the 3 pains used in copy
 ├── index.html            # self-contained HTML page (Tailwind via CDN)
@@ -129,6 +129,8 @@ Spots left this month: {n}
 - OG tags for social sharing.
 - A CTA button that scrolls to the form.
 
+> **Form endpoint:** Replace `REPLACE_WITH_FORM_ENDPOINT` with a webhook from Netlify Forms, Formspree, or a Zapier catch hook. If none is configured, leave the placeholder and flag it in the deliverable's README so the user knows to set it before publishing.
+
 `README.md` explains:
 - How to fill in client logos and case-study numbers.
 - How to wire the form to a real audit backend (link to SE Ranking audit API or the agency's own tool).
@@ -137,6 +139,7 @@ Spots left this month: {n}
 
 ## Tips
 
+- Respect SE Ranking Data API rate limit: 10 requests per second. Iterate sequentially.
 - The page lives and dies by the hook. Specific numbers beat generalities. "You are losing 18% of top-funnel traffic to AI Overviews" beats "AI is changing SEO".
 - Do not promise what the agency cannot deliver. If the free audit is limited to the first 100 URLs, say so on the page.
 - Mobile-first. Hero fits on one iPhone screen.

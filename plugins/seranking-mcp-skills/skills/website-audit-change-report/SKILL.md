@@ -44,10 +44,10 @@ Compare the latest audit against the previous snapshot for a domain and produce 
 
 ## Output format
 
-Create a folder `audit-change-{domain-slug}-{date}/` with:
+Create a folder `website-audit-change-report-{target-slug}-{YYYYMMDD}/` with:
 
 ```
-audit-change-{domain-slug}-{date}/
+website-audit-change-report-{target-slug}-{YYYYMMDD}/
 ├── 01-current-snapshot.md
 ├── 02-previous-snapshot.md
 ├── 03-diff-raw.md           # full diff, not prioritised

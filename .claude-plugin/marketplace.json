@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Official Claude Code plugin marketplace from SE Ranking. Plugins built on top of the SE Ranking SEO Data API MCP server.",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "plugins": [
     {
       "name": "seranking-mcp-skills",
       "source": "./plugins/seranking-mcp-skills",
       "description": "Seven production SEO workflows for the SE Ranking MCP server. Content briefs, AI Search share-of-voice reports, audit change reports, backlink gap lists, keyword cluster plans, competitor gap analyses, and demand-gen landing pages.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "SE Ranking",
         "email": "api@seranking.com"

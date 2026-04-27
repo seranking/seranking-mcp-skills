@@ -10,6 +10,7 @@ Turn a domain plus a topic intent into a complete content editor brief: target k
 ## Prerequisites
 
 - SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- Claude's `WebFetch` tool available (used for top-3 content teardown).
 - User has provided: (a) target domain, (b) market/country (default: `us`), and optionally (c) a seed topic or intent. If no seed topic is given, discover the best opportunity from the keyword-gap step.
 
 ## Process
@@ -21,6 +22,7 @@ Turn a domain plus a topic intent into a complete content editor brief: target k
 2. **Competitor discovery** `DATA_getDomainCompetitors`
    - Identify the top 5 organic competitors by shared keywords in the target market.
    - Save a one-line positioning note per competitor.
+   - **Note:** the upstream API does not support `limit`/`offset`, so this call returns the full set (~60KB for popular domains) and the MCP harness writes it to a file. Read that file path, parse the `{data: [...]}` JSON, sort by `common_keywords` desc, and take the top 5.
 
 3. **Keyword gap analysis** `DATA_getDomainKeywordsComparison`
    - Pull keywords the competitors rank for that the target domain does not.
@@ -49,10 +51,10 @@ Turn a domain plus a topic intent into a complete content editor brief: target k
 
 ## Output format
 
-Create a folder `content-brief-{slug}/` with one file per step plus the final `BRIEF.md`:
+Create a folder `content-brief-{target-slug}-{YYYYMMDD}/` with one file per step plus the final `BRIEF.md`:
 
 ```
-content-brief-{slug}/
+content-brief-{target-slug}-{YYYYMMDD}/
 ├── 01-domain-overview.md
 ├── 02-competitors.md
 ├── 03-keyword-gaps.md

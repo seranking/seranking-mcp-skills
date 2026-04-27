@@ -43,10 +43,10 @@ Transform seed keywords into a prioritised cluster plan: each cluster grouped by
 
 ## Output format
 
-Create a folder `clusters-{topic-slug}/` with:
+Create a folder `keyword-cluster-planner-{target-slug}-{YYYYMMDD}/` with:
 
 ```
-clusters-{topic-slug}/
+keyword-cluster-planner-{target-slug}-{YYYYMMDD}/
 ├── 01-seed-expansion.md
 ├── 02-filtered-keywords.md
 ├── 03-cluster-assignment.md
@@ -105,6 +105,7 @@ Seeds: {seed list}
 ## Tips
 
 - Respect Data API rate limit: 10 requests per second. With 20 seeds and 3 expansion endpoints, this is ~60 calls; pace sequentially.
+- Call `DATA_getCreditBalance` before running. A full pass on 10 seeds typically consumes 30–80 credits; 20 seeds can exceed 150.
 - Do not lump different intents into the same cluster even if the keywords are semantically similar. "Best X" (commercial) and "What is X" (informational) deserve separate content.
 - Pillar pages fail when they try to rank for too narrow a query. The primary keyword of a pillar cluster should have volume > 1,000/mo and be broad enough to justify a 3,000+ word article.
 - The priority score is a starting point, not a mandate. Ask the user to review the top 3 clusters before committing a quarter of content.

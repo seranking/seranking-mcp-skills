@@ -38,10 +38,10 @@ Compare AI-search visibility for a target brand against competitors across every
 
 ## Output format
 
-Create a folder `ai-sov-{target-slug}/` with:
+Create a folder `ai-search-share-of-voice-{target-slug}-{YYYYMMDD}/` with:
 
 ```
-ai-sov-{target-slug}/
+ai-search-share-of-voice-{target-slug}-{YYYYMMDD}/
 ├── 01-leaderboard.md         # raw leaderboard per engine
 ├── 02-heatmap.md             # visual heatmap table
 ├── 03-prompts-{domain}.md    # one file per domain with 20 sampled prompts

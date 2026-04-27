@@ -10,6 +10,7 @@ Produce an actionable link-prospecting list: domains linking to your top competi
 ## Prerequisites
 
 - SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- Claude's `WebFetch` tool available (used for prospect scoring and topical relevance checks).
 - User provides: (a) target domain, (b) 3 to 5 competitor domains, and optionally (c) minimum Domain Trust (default: 25), (d) dofollow-only filter (default: true), (e) minimum intersection count (default: linked by at least 2 of the N competitors).
 
 ## Process
@@ -38,10 +39,10 @@ Produce an actionable link-prospecting list: domains linking to your top competi
 
 ## Output format
 
-Create a folder `backlink-gap-{target-slug}/` with:
+Create a folder `backlink-gap-{target-slug}-{YYYYMMDD}/` with:
 
 ```
-backlink-gap-{target-slug}/
+backlink-gap-{target-slug}-{YYYYMMDD}/
 ├── 01-target-baseline.md
 ├── 02-competitor-{domain}-refs.md   # one per competitor
 ├── 03-intersection-raw.md

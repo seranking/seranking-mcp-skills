@@ -17,6 +17,7 @@ Identify the specific keywords your competitors rank for in the top 20 that your
 1. **Validate or discover competitors** `DATA_getDomainCompetitors`
    - If the user did not provide competitors, pull the top 5 organic competitors for the target in the target market.
    - Surface the list to the user and ask them to confirm or override before proceeding.
+   - **Note:** the upstream API does not support `limit`/`offset`, so this call returns the full set (~60KB for popular domains) and the MCP harness writes it to a file. Read that file path, parse the `{data: [...]}` JSON, sort by `common_keywords` desc, and take the top 5.
 
 2. **Pull competitor keyword sets** `DATA_getDomainKeywords`
    - For each competitor, pull keywords where they rank in the top 20 of the target country.
@@ -45,10 +46,10 @@ Identify the specific keywords your competitors rank for in the top 20 that your
 
 ## Output format
 
-Create a folder `gap-{target-slug}/` with:
+Create a folder `competitor-gap-analysis-{target-slug}-{YYYYMMDD}/` with:
 
 ```
-gap-{target-slug}/
+competitor-gap-analysis-{target-slug}-{YYYYMMDD}/
 ├── 01-competitors.md
 ├── 02-competitor-keywords-{domain}.md   # one per competitor
 ├── 03-target-keywords.md
@@ -109,6 +110,7 @@ Keywords where competitors rank in positions 5 to 20 with thin content, low DT, 
 ## Tips
 
 - Data API rate limit: 10 requests per second. For large sites, `DATA_getDomainKeywords` may paginate heavily; set a ceiling (e.g., top 1,000 keywords per domain) unless the user explicitly asks for the full set.
+- Call `DATA_getCreditBalance` before running. A full pass on 10 seeds typically consumes 30–80 credits; 20 seeds can exceed 150.
 - The `competitors_ranking` count is the best signal of realism. Keywords ranked by 4 of 5 competitors are validated opportunities; keywords ranked by only 1 may be noise.
 - Do not recommend capturing branded competitor keywords unless the user explicitly asks. Pivoting to compete on "competitor brand review" is a viable strategy but only if the user opts in.
 - When many gap keywords cluster around a theme, recommend a hub page plus cluster rather than 50 individual articles.
