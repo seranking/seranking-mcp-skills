@@ -1,7 +1,7 @@
 {
   "name": "seo-skills",
   "description": "Claude SEO Skills for the SE Ranking MCP server. Turns raw API data into finished deliverables across keyword research, content briefing, page intelligence, technical and content audits, structured data, drift monitoring, SXO diagnostics, competitive analysis, paid search, AI-search optimization, sitemap analysis, subdomain mapping, and content opportunity mining.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": {
     "name": "SE Ranking",
     "email": "api@seranking.com",

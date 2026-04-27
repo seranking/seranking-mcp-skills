@@ -31,9 +31,14 @@ Diagnose why a "well-optimized" page doesn't rank. Reads the actual SERP for the
    - If AIO is present for the keyword, capture the answer text and citation list.
    - Note which top-10 organic results are also cited in the AIO.
 
-4. **WebFetch top winners**
-   - Fetch the user's page + the top 3 SERP winners.
-   - Extract: `<title>`, all H-tags, schema types, primary content structure (numbered list? table? prose? Q&A?), word count, image-pack indicators, presence of comparison/feature tables, CTA presence and prominence.
+4. **Fetch user's page + top 3 winners** `WebFetch` (always) + `mcp__firecrawl-mcp__firecrawl_scrape` (when available)
+   - **WebFetch first** (free): pull markdown for the user's page + top 3 winners. Extract `<title>`, all H-tags, primary content structure (numbered list / table / prose / Q&A), word count, image mentions, comparison-table presence, CTA mentions.
+   - **Firecrawl second** (4 Firecrawl credits typical — 1 per page) — recovers what WebFetch can't show:
+     - JSON-LD `@type`s per page (Product, FAQPage, BreadcrumbList, Article, Review, ItemList, etc.) — these are **load-bearing** for page-type classification in step 5. WebFetch's markdown can't see schema.
+     - `og:title` / `og:image` / `twitter:card` from `metadata`.
+     - Real `<title>` length (the markdown first-heading is sometimes wrong).
+   - **`--screenshots` flag (opt-in, +4 Firecrawl credits):** when passed, also call `firecrawl_scrape` with `formats: ["screenshot"]` on the user's page + top 3 winners. Save as `screenshots/{page}.png`. Reference in the wireframe (step 8) to ground recommendations in the visual layout, not just the text outline.
+   - **If Firecrawl unavailable (or `--no-firecrawl` passed):** WebFetch portion runs. Page-type classification in step 5 falls back to URL/title heuristics + content-structure heuristics only — schema-based classification is skipped. Note in `02-page-type-classification.md`: `Schema-based classification: skipped — Firecrawl required.` Confidence in dominant-pattern detection drops accordingly.
 
 5. **Classify each top-10 result by page type**
    - Use the heuristics in `references/page-type-patterns.md`.
@@ -66,6 +71,7 @@ seo-sxo-{target-slug}-{YYYYMMDD}/
 ├── 03-user-page-fingerprint.md    (the candidate page's structure)
 ├── 04-persona-scores.md           (4 personas × current page)
 ├── 05-recommendation.md           (verdict + page-type-winning wireframe)
+├── screenshots/                   (only if --screenshots ran: candidate.png + winner-1/2/3.png)
 └── SXO-REPORT.md                  (executive summary deliverable)
 ```
 
@@ -129,7 +135,7 @@ seo-sxo-{target-slug}-{YYYYMMDD}/
 ## Tips
 
 - Respect rate limit: 10 req/sec. The SERP calls in step 2/3 are fast; WebFetch calls in step 4 dominate latency, not API.
-- **Cost is mode-dependent.** `mode=full` is ~750–900 credits per run (the SERP-advanced call dominates). `mode=lite` is ~80–150 credits. Always call `DATA_getCreditBalance` before running and surface the estimate against remaining balance.
+- **Cost is mode-dependent.** `mode=full` is ~750–900 SE Ranking credits per run (the SERP-advanced call dominates). `mode=lite` is ~80–150 SE Ranking credits. Always call `DATA_getCreditBalance` before running and surface the estimate against remaining balance. Step 4 adds 4 Firecrawl credits when Firecrawl is available, +4 more if `--screenshots` is passed. Pass `--no-firecrawl` to skip both.
 - **`result_type=advanced` is the only way to get AIO / PAA / pack data.** The standard SERP endpoint returns organic-only. Don't try to reconstruct SERP features from organic results — that's the cost the user is paying for.
 - Page-type classification is a heuristic — `references/page-type-patterns.md` documents the signals so users can override. If the heuristic gets a result wrong, edit that file with the correction.
 - The 4 personas are opinionated. They come from the framework's original source — don't invent more without good reason.

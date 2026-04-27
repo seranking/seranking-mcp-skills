@@ -22,12 +22,14 @@ If your workflow specifically *requires* multi-source blending (large agencies, 
 - SE Ranking MCP server connected.
 - User provides: a target domain.
 - Claude's `WebFetch` tool optional (for spot-checking flagged toxic candidates).
+- `mcp__firecrawl-mcp__firecrawl_scrape` optional (for the new step 8b — link-source verification).
 
 ## Process
 
 1. **Validate & preflight**
    - Normalise domain.
    - `DATA_getCreditBalance` — surface remaining credits. Profile run is moderate cost.
+   - **Firecrawl availability check.** If `mcp__firecrawl-mcp__firecrawl_scrape` is available, the optional step 8b (link-source verification) is offered — scrapes top-20 referring domains' linking pages to verify the link is still present and what `rel` attribute it carries (dofollow / nofollow / sponsored / UGC). Cost: 20 Firecrawl credits per run. Default off — opt in with `--verify-sources`. Pass `--no-firecrawl` to skip even if available.
 
 2. **Profile summary** `DATA_getBacklinksSummary`
    - Total backlinks, total referring domains, dofollow/nofollow ratio, link-type distribution (text / image / form / frame), growth velocity over the last 30/90 days.
@@ -56,6 +58,17 @@ If your workflow specifically *requires* multi-source blending (large agencies, 
 8. **Lost links list** `DATA_listNewLostBacklinks`, `DATA_listNewLostReferringDomains`
    - Sample recent losses. Are any high-authority losses?
 
+8b. **Optional: live link-source verification** `mcp__firecrawl-mcp__firecrawl_scrape`
+   - Triggered only when `--verify-sources` is passed (default off — credit-conscious).
+   - For the top 20 referring domains by authority (from step 3), pick the highest-authority linking page per domain. Scrape each (20 Firecrawl credits typical).
+   - For each scrape, parse the returned `html` for `<a href>` matching the target domain. Capture: link still present (`true`/`false`/`page-404`), `rel` attribute (`dofollow` if absent or empty, else the literal value: `nofollow`, `ugc`, `sponsored`, or combinations), surrounding context (anchor text + 50 chars before/after).
+   - Surface mismatches against the SE Ranking-reported state in `08b-source-verification.md`:
+     - Link gone — SE Ranking still reports it as live (lag/error).
+     - `rel` attribute differs from what SE Ranking flagged.
+     - Source page returns non-200.
+   - Feeds into step 9: a verified-gone link or `rel=nofollow` discovered post-hoc upgrades the toxic-candidate signal for that referring domain.
+   - **If Firecrawl unavailable (or flag not passed):** skip entirely. SE Ranking's flagged state remains the source of truth — the skill's "Single-source by design" framing already explains why that's a deliberate trade-off.
+
 9. **Toxic candidate detection** (heuristic — see Tips for the rules)
    - Apply the toxic heuristic to the referring-domain list.
    - Flag candidates. Each row gets a `risk_score` and `triggers` (which heuristic rules fired).
@@ -76,6 +89,7 @@ seo-backlinks-profile-{target-slug}-{YYYYMMDD}/
 ├── 05-diversity.md            (IPs + subnets + concentration)
 ├── 06-trend.md                (last 6 months new/lost)
 ├── 07-losses-sample.md        (recent lost backlinks)
+├── 08b-source-verification.md (only if --verify-sources ran: live link + rel attribute checks for top-20 sources)
 ├── disavow-candidates.csv     (toxic-flagged rows for review)
 └── PROFILE.md                 (synthesised report)
 ```
@@ -163,7 +177,7 @@ See `disavow-candidates.csv`. Top 10 by risk_score:
 ## Tips
 
 - Respect rate limit. The endpoints in steps 2–8 are ~15 calls; pace sequentially.
-- Cost: ~25–40 credits typical for a full profile run.
+- Cost: ~25–40 SE Ranking credits typical for a full profile run. Optional step 8b adds 20 Firecrawl credits when `--verify-sources` is passed (one scrape per top-20 source domain).
 - **Toxic heuristic rules** (any 2+ triggers = candidate):
   - Authority < 10 (low-trust source).
   - Sitewide link count > 5 (footer/sidebar links across many pages — manipulation signal).

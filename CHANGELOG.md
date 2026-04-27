@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. Format based on Keep a Changelog.
 
+## [2.3.0] — 2026-04-27
+
+Completes the Firecrawl integration started in v2.2.0. Ships the install scaffold, the `seo-firecrawl` orchestrator skill, and four v1.5-track skill patches (`seo-content-brief`, `seo-competitor-pages`, `seo-sxo`, `seo-backlinks-profile`). Together with v2.2.0, every skill that genuinely benefits from Firecrawl is wired up — and the install path now actually ships in the plugin.
+
+### Added
+- **`extensions/firecrawl/`** install scaffold (`install.sh`, `uninstall.sh`, `README.md`) per plan §4. `install.sh` checks Node 20+/npx/python3, prompts for `FIRECRAWL_API_KEY`, idempotently merges `mcpServers.firecrawl-mcp` into `~/.claude/settings.json` via a Python step that preserves existing entries, pre-warms the npm package, prints the available tools. `uninstall.sh` removes the entry only. `README.md` is a one-page setup + free-tier credit math + tool-prefix reference + troubleshooting.
+- **`skills/seo-firecrawl/SKILL.md`** — ad-hoc orchestrator skill per plan §7. Modes: `scrape` (single URL), `map` (domain → URL list), `crawl` (domain → all pages), `search` (within a domain). Cost-confirmation gates for `crawl` and large `map` runs. Per-mode output folders (`RAW.md` + `META.md` + `links.csv` for scrape, `URLS.md` + `urls.csv` for map, `INDEX.md` + per-page folders for crawl, `MATCHES.md` for search). Handoff payload routes follow-up to `seo-page` / `seo-schema` / `seo-technical-audit` / `seo-content-audit` / `seo-drift baseline`.
+
+### Fixed (v1.5 broken claims — same WebFetch markdown problem as v2.2.0)
+- **`seo-competitor-pages`** step 5 — claimed to extract "schema types" from WebFetch markdown. Fixed: WebFetch handles H2 outline / feature-matrix / CTA prose; Firecrawl recovers schema types + og:* / twitter:* on top-3 SERP winners. Schema generation in step 8 now falls back to a default `Product + BreadcrumbList + FAQPage` template when Firecrawl is absent rather than mirroring inference-from-markdown guesses.
+- **`seo-sxo`** step 4 — claimed to extract "schema types" from WebFetch markdown. Fixed: WebFetch handles prose / H-tags / content-structure; Firecrawl recovers JSON-LD `@type`s per page, which are load-bearing for the page-type classification heuristic in step 5. Without Firecrawl the heuristic falls back to URL/title patterns + content-structure heuristics only — confidence drop noted in `02-page-type-classification.md`.
+
+### Added (v1.5 — Firecrawl enhancements, opt-in or default-on graceful degrade)
+- **`seo-content-brief`** step 6 — Firecrawl scrape on top-3 SERP winners (3 credits) recovers real `<title>` length, meta-description length, og:*, twitter:*, JSON-LD `@type`s, DOM byline structure, hero-image presence, table/code-block counts. New "Top 3 winners — on-page benchmark" table in `BRIEF.md` so the writer matches what's actually shipping in the SERP.
+- **`seo-competitor-pages`** new step 5b — opt-in `--bulk-scrape <urls>` mode. Firecrawl-scrape each user-supplied competitor URL; emit `competitor-elements.csv` with title / og / twitter / JSON-LD / pricing-block / CTA-count / comparison-table / free-tier-mention columns. 1 Firecrawl credit per URL; refuses >50 without `--confirm-cost`.
+- **`seo-sxo`** step 4 — opt-in `--screenshots` flag. Firecrawl scrape with `formats: ["screenshot"]` on candidate + top 3 winners (4 extra credits). Saved as `screenshots/{page}.png`. Wireframe in step 8 can reference the visual layout, not just text outline.
+- **`seo-backlinks-profile`** new step 8b — opt-in `--verify-sources` flag. Firecrawl-scrape the highest-authority linking page per top-20 referring domain (20 credits). Verifies (a) link still present, (b) `rel` attribute (`dofollow` / `nofollow` / `sponsored` / `ugc`), (c) source page status. Mismatches against SE Ranking's reported state surface in `08b-source-verification.md` and feed step 9's toxic-candidate detection. Default off — keeps the "Single-source by design" framing intact unless the user opts in.
+
+### Cost surfacing — new in v2.3.0
+v2.2.0's cost table covers `seo-page` / `seo-schema` / `seo-geo` / `seo-technical-audit` / `seo-sitemap` / `seo-content-audit` / `seo-drift`. Added in v2.3.0:
+
+| Skill | Firecrawl credits per run |
+|---|---|
+| `seo-content-brief` | 3 (top-3 SERP winners scrape) |
+| `seo-competitor-pages` | 3 baseline + 1 per URL in `--bulk-scrape` (refuses >50 without `--confirm-cost`) |
+| `seo-sxo` | 4 baseline + 4 if `--screenshots` |
+| `seo-backlinks-profile` | 20 if `--verify-sources` (default off) |
+| `seo-firecrawl` | user-driven; warn at >100, refuse >500 without `--confirm-cost` |
+
+Every Firecrawl-using skill supports `--no-firecrawl` to opt out and run in degraded mode.
+
+### Critical pre-ship check (still required before broad release)
+Plan §10 risk: tool prefix `mcp__firecrawl-mcp__firecrawl_*` must be verified on a clean profile install. Run `bash extensions/firecrawl/install.sh`, then `/mcp` in Claude Code, confirm the registered prefix matches. If it differs, every reference in the 11 Firecrawl-using skills silently mis-fires.
+
+### Changed
+- All three version strings bumped to 2.3.0.
+
 ## [2.2.0] — 2026-04-27
 
 Firecrawl integration ships across 7 skills, closing the "WebFetch can't see the `<head>`" correctness gap that v2.1.0 explicitly deferred. Each affected skill now uses `mcp__firecrawl-mcp__firecrawl_scrape` (or `firecrawl_map`) to recover `og:*`, `twitter:*`, canonical, robots, JSON-LD, and X-Robots-Tag content that WebFetch's markdown conversion strips. Firecrawl is treated as an optional enhancement: every Firecrawl-using step degrades gracefully — emitting an explicit `(skipped — Firecrawl not installed)` note in the deliverable — rather than failing the run.

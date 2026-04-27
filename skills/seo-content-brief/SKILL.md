@@ -38,10 +38,13 @@ Turn a domain plus a topic intent into a complete content editor brief: target k
    - `DATA_getKeywordQuestions` for People-Also-Ask and question-based variations.
    - `DATA_getAiOverview` + `DATA_getAiOverviewLeaderboard` to see which brands LLMs cite today for the topic.
 
-6. **Top 3 content analysis**
-   - WebFetch the top 3 ranking URLs.
-   - Extract H1/H2/H3 spine and word count per article.
-   - Identify shared subtopics (what all 3 cover), gaps (what they miss), and formatting patterns.
+6. **Top 3 content analysis** `WebFetch` (always) + `mcp__firecrawl-mcp__firecrawl_scrape` (when available)
+   - **WebFetch first** (free, instant): pull markdown for the top 3 ranking URLs. Extract H1/H2/H3 spine, word count per article, shared subtopics, gaps, and prose-level formatting patterns.
+   - **Firecrawl second** (3 Firecrawl credits — 1 per top-3 winner) — recovers what WebFetch's markdown can't show:
+     - From `metadata`: `<title>` length (the real string, not markdown's first heading), meta description length, `og:title`, `og:description`, `og:image`, `twitter:card`.
+     - From the returned `html`: every `<script type="application/ld+json">` block. Parse and list `@type`s per winner (Article, FAQPage, BreadcrumbList, Product, etc.) — these become the "schema baseline" for the new article.
+     - On-page signals: hero-image presence, byline structure (`<a rel="author">`, `<meta name="author">`), table count, code-block count.
+   - **If Firecrawl unavailable (or `--no-firecrawl` passed):** WebFetch portion runs unchanged. The brief's "Top 3 winners — on-page benchmark" subsection (see Output) emits `(skipped — Firecrawl required for schema/og:* on competitor pages)`.
 
 7. **Internal linking plan**
    - `DATA_getDomainKeywords` filtered to the target domain plus WebFetch of 5 high-ranking pages on topically adjacent queries.
@@ -97,6 +100,20 @@ Cite: {sources to link out to}
 - {gap 2, with evidence}
 - {gap 3, with evidence}
 
+## Top 3 winners — on-page benchmark (Firecrawl)
+
+| Signal | Winner 1 | Winner 2 | Winner 3 | Required for parity |
+|---|---|---|---|---|
+| `<title>` length (chars) | {n} | {n} | {n} | {target} |
+| Meta description length | {n} | {n} | {n} | {target} |
+| `og:image` present | {✓/✗} | {✓/✗} | {✓/✗} | {yes/no} |
+| `twitter:card` | {value} | {value} | {value} | {value} |
+| JSON-LD types | {Article, …} | {…} | {…} | {must include} |
+| Byline structure (DOM) | {✓/✗} | {✓/✗} | {✓/✗} | {yes/no} |
+| Word count (rendered) | {n} | {n} | {n} | {target range} |
+
+(Or: `Top-3 on-page benchmark: skipped — Firecrawl not installed.`)
+
 ## Internal linking plan
 | From existing page | Anchor text | Target section |
 |---|---|---|
@@ -127,6 +144,7 @@ Cite: {sources to link out to}
 ## Tips
 
 - Respect SE Ranking Data API rate limit: 10 requests per second. Iterate sequentially, do not fan out across 20 keywords in parallel.
+- **Firecrawl cost.** Step 6's competitor benchmark adds 3 Firecrawl credits per run (1 per top-3 winner). Pass `--no-firecrawl` to skip it (the brief still ships, just without the on-page benchmark table).
 - If the user only provides a domain and no topic, run step 3 first and present the top 3 gap opportunities before deciding.
 - Keep the brief self-contained. A freelance writer should not need to open the raw-data files unless they want to double-check something.
 - Do not hallucinate keyword difficulty or volume. If an endpoint returns null, mark the field unknown in the brief rather than guessing.

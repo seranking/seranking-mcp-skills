@@ -39,10 +39,20 @@ Produce conversion-tuned landing pages targeting comparative-intent keywords ("X
      - PAA questions (these become FAQ section content).
      - Featured snippet (if present, capture the answer pattern).
 
-5. **Fetch existing comparison pages** `WebFetch`
-   - Pull the top 3 SERP winners for the target keyword.
-   - Extract their structure: H2 outline, feature-matrix dimensions, verdict pattern, CTA placement, schema types.
+5. **Fetch existing comparison pages** `WebFetch` (always) + `mcp__firecrawl-mcp__firecrawl_scrape` (when available)
+   - **WebFetch first** (free): pull the top 3 SERP winners' markdown. Extract H2 outline, feature-matrix dimensions, verdict pattern, CTA placement.
+   - **Firecrawl second** (3 Firecrawl credits — 1 per winner) — recovers what WebFetch markdown can't show:
+     - Schema types from `<script type="application/ld+json">` blocks (`Product` ×N, `BreadcrumbList`, `FAQPage`, `Review`, `AggregateRating`).
+     - `og:title` / `og:description` / `og:image` / `twitter:card` from `metadata`.
+     - `<title>` and meta description lengths from real HTML.
+   - **If Firecrawl unavailable:** WebFetch portion runs unchanged. The "schema types" line in `04-existing-pages-teardown.md` reads `(skipped — Firecrawl required for JSON-LD)`. Schema generation in step 8 falls back to a default `Product + BreadcrumbList + FAQPage` template instead of mirroring whatever the winners use.
    - This anchors the draft in observed-rewarded-pattern.
+
+5b. **Bulk competitor scrape** `mcp__firecrawl-mcp__firecrawl_scrape` (optional, opt-in)
+   - When user passes `--bulk-scrape <urls>` or supplies a list of competitor URLs to compare directly (beyond the SERP top-3), Firecrawl-scrape each URL.
+   - For each URL, extract: `<title>`, `og:*`, `twitter:*`, JSON-LD `@type`s, hero-image presence, pricing-block detection (regex on prose for `$N/mo`, `€N/mo`, etc.), CTA count, comparison-table presence, free-tier-mention boolean.
+   - Output `competitor-elements.csv` — one row per competitor URL × these signals.
+   - Cost: 1 Firecrawl credit per URL. Surface estimate before running; refuse >50 URLs without `--confirm-cost`.
 
 6. **Pull keyword comparison data** `DATA_getDomainKeywordsComparison` (if available for the brands)
    - Side-by-side keyword overlap.
@@ -71,8 +81,9 @@ seo-competitor-pages-{target-slug}-{YYYYMMDD}/
 ├── 01-competitor-context.md      (DATA_getDomainCompetitors)
 ├── 02-keyword-overlap.md         (DATA_getDomainKeywords for each brand)
 ├── 03-comparative-serp.md        (top 10 + PAA for the target keyword)
-├── 04-existing-pages-teardown.md (top-3 SERP winners' structure)
+├── 04-existing-pages-teardown.md (top-3 SERP winners' structure + schema/og — Firecrawl-recovered)
 ├── 05-feature-matrix.md          (inferred dimensions × brands)
+├── 05b-competitor-elements.csv   (only if --bulk-scrape ran: competitor URL × on-page-element grid)
 ├── schema.jsonld                 (paste-ready Product + Breadcrumb + FAQ)
 └── COMPARISON.md                 (the page draft)
 ```
@@ -142,7 +153,7 @@ See `schema.jsonld` — paste into `<head>`.
 
 - **Balance is conversion.** Pages that pretend the user's product is always better lose trust and rankings. Honest assessments outperform partisan ones.
 - Respect rate limit. Step 5 (fetching top 3 SERP winners) takes 3 WebFetch calls + earlier MCP queries.
-- Cost: ~15–25 credits typical.
+- Cost: ~15–25 SE Ranking credits typical, +3 Firecrawl credits for the schema/og benchmark in step 5, +1 Firecrawl credit per URL in step 5b (opt-in only). Pass `--no-firecrawl` to skip both Firecrawl steps.
 - **Schema:** use `Product` for both products in a vs page, plus `BreadcrumbList`, plus `FAQPage` if the FAQ section is real Q&A (not a manufactured one).
 - For "alternatives to X" pages, position the user's product as one of N (typically 5–10), not as #1. Numbered listicles convert better than self-promotional alternatives pages.
 - For "best X for Y" pages, segment by use case explicitly — "best for solo developers" vs "best for enterprise teams" — this lets you win multiple long-tail variants.
