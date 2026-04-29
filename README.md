@@ -33,7 +33,7 @@ These Claude Skills are designed to work with the SE Ranking MCP server, but the
 
 ## Prerequisites
 
-- [Claude Code](https://code.claude.com), the Claude API, or [Claude.ai](https://claude.ai) with Skills enabled.
+- [Claude Code](https://code.claude.com), the Claude Desktop app (with Cowork), the Claude API, or [Claude.ai](https://claude.ai) with Skills enabled.
 - The [SE Ranking remote MCP](https://seranking.com/api/integrations/mcp) connected to your Claude workspace. In Claude Code: `claude mcp add --transport http se-ranking https://api.seranking.com/mcp`, then run `/mcp` in a session and sign in via OAuth — no API token to manage.
 - An SE Ranking account with API access enabled. [Sign up](https://seranking.com/api.html) if you don't already have one.
 - **Optional:** the [Firecrawl extension](#firecrawl-raw-html-json-ld-js-rendering-site-crawl) for skills that need raw HTML, JSON-LD, JS-rendered DOM, or full-site crawling. Eleven of the SE Ranking skills opportunistically use it; all degrade gracefully when it's absent.
@@ -62,7 +62,18 @@ Skills are namespaced under the plugin. Trigger them with:
 
 To update the marketplace later: `/plugin marketplace update seranking`.
 
-### Option 2: Local plugin development mode
+### Option 2: Claude Cowork (Claude Desktop)
+
+In the Claude Desktop app, Cowork installs plugins from the same marketplace through a UI flow rather than a slash command:
+
+1. Open **Customize** in the sidebar.
+2. Click **Personal plugin** → **+ Create plugin**.
+3. Click **Add marketplace** and enter `seranking/seo-skills`.
+4. Install the plugin from the marketplace once it loads.
+
+Skills are namespaced the same way as in Claude Code (`seo-skills:seo-content-brief`, etc.) and are available immediately in your next Cowork session.
+
+### Option 3: Local plugin development mode
 
 ```bash
 # Clone the repo
@@ -72,7 +83,7 @@ git clone https://github.com/seranking/seo-skills.git
 claude --plugin-dir ./seo-skills
 ```
 
-### Option 3: Copy individual skills
+### Option 4: Copy individual skills
 
 ```bash
 # Clone the repo
@@ -87,7 +98,7 @@ cp -r seo-skills/skills/* ~/.claude/skills/
 
 Skills copied this way are not namespaced. Trigger them directly by description match.
 
-### Option 4: Project-scoped install
+### Option 5: Project-scoped install
 
 Copy into a specific project's `.claude/skills/` directory to make the skills available only when Claude Code runs in that project.
 
@@ -95,7 +106,7 @@ Copy into a specific project's `.claude/skills/` directory to make the skills av
 cp -r seo-skills/skills/* /path/to/your/project/.claude/skills/
 ```
 
-### Option 5: Claude API
+### Option 6: Claude API
 
 Upload any skill as a zip to the Claude API via the `/v1/skills` endpoints. See [Anthropic's Skills API guide](https://platform.claude.com/docs/en/build-with-claude/skills-guide).
 
