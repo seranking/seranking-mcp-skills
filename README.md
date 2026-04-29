@@ -4,6 +4,66 @@ Production-ready [Claude Agent Skills](https://platform.claude.com/docs/en/agent
 
 These Claude Skills are designed to work with the SE Ranking MCP server, but they document every API call explicitly so they can also be adapted to other SEO data providers.
 
+## Install
+
+Three ways. Pick the first one that fits.
+
+### 1. Claude Desktop (recommended)
+
+The easiest setup — no terminal needed. Cowork in Claude Desktop installs the plugin from a marketplace through a UI flow.
+
+1. Open **Customize** in the sidebar.
+2. Click **Personal plugin** → **+ Create plugin**.
+3. Click **Add marketplace** and enter `seranking/seo-skills`.
+4. Install the plugin once the marketplace loads.
+
+Skills are available in your next Cowork session. They're namespaced — trigger them by name like `seo-content-brief`, `seo-page`, etc.
+
+### 2. Claude Code (slash commands)
+
+If you use Claude Code in the terminal:
+
+```bash
+/plugin marketplace add seranking/seo-skills
+/plugin install seo-skills@seranking
+```
+
+Trigger skills with `/seo-skills:seo-content-brief`, `/seo-skills:seo-page`, etc. Update the marketplace later with `/plugin marketplace update seranking`.
+
+### 3. Manual install (only if you want `seo-google` or the optional extensions)
+
+Options 1 and 2 cover **21 of 22 skills**. The 22nd — `seo-google` — ships Python scripts that need a local clone. The optional Firecrawl + Google extensions also need this. **If neither matters to you, skip this option.**
+
+```bash
+git clone --depth 1 https://github.com/seranking/seo-skills.git
+bash seo-skills/install.sh
+```
+
+The installer is interactive — it asks which extensions to install. Accept the defaults and you're done. Re-running pulls the latest version and re-runs the chosen extensions. Requires `git`, `python3` 3.10+, and (for Firecrawl) `node` 20+.
+
+<details>
+<summary>One-liner (curl)</summary>
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/seranking/seo-skills/main/install.sh | bash -s -- --all
+```
+
+`--all` enables both extensions. Use `--firecrawl` / `--google` individually, or `--no-extensions` to clone only. Default clone target is `~/.local/share/seo-skills`; override with `--target /path/to/dir`.
+
+</details>
+
+The manual install only wires your *environment* (extensions, Python deps, `~/.config/seo-skills/`). You still need Option 1 or 2 above so Claude can find the skill files.
+
+### Connect SE Ranking (any install path)
+
+All skills are powered by the SE Ranking remote MCP. Connect it once:
+
+```bash
+claude mcp add --transport http se-ranking https://api.seranking.com/mcp
+```
+
+Run `/mcp` in your next session and sign in via OAuth. No API token to manage. If you don't have an SE Ranking account yet, [sign up](https://seranking.com/api.html) — API access is required.
+
 ## Skills
 
 | Skill | What it produces | Primary triggers |
@@ -31,133 +91,11 @@ These Claude Skills are designed to work with the SE Ranking MCP server, but the
 | [`seo-plan`](skills/seo-plan/SKILL.md) | Phased SEO roadmap for a domain — quarter-by-quarter, tied to competitive position, content gaps, technical debt, and AI Search readiness. Sequences specialist-skill outputs into one site-level plan with owners, metrics, and a critical path | "SEO plan", "SEO strategy", "SEO roadmap", "90-day plan", "where do we focus next" |
 | [`seo-google`](skills/seo-google/SKILL.md) | Google's own SEO data: GSC Search Analytics + URL Inspection + Sitemaps, PageSpeed Insights, CrUX field data + 25-week history, Indexing API, GA4 organic, YouTube, NLP, Knowledge Graph, Web Risk, Keyword Planner. 4 credential tiers; lower tiers are useful on their own *(requires the [Google APIs extension](#google-apis-real-cwv-gsc-ga4-youtube-keyword-planner))* | "search console", "GSC", "PageSpeed", "CrUX", "URL inspection", "real CWV data", "GA4 organic", "google api setup" |
 
-## Prerequisites
-
-- [Claude Code](https://code.claude.com), the Claude Desktop app (with Cowork), the Claude API, or [Claude.ai](https://claude.ai) with Skills enabled.
-- The [SE Ranking remote MCP](https://seranking.com/api/integrations/mcp) connected to your Claude workspace. In Claude Code: `claude mcp add --transport http se-ranking https://api.seranking.com/mcp`, then run `/mcp` in a session and sign in via OAuth — no API token to manage.
-- An SE Ranking account with API access enabled. [Sign up](https://seranking.com/api.html) if you don't already have one.
-- **Optional:** the [Firecrawl extension](#firecrawl-raw-html-json-ld-js-rendering-site-crawl) for skills that need raw HTML, JSON-LD, JS-rendered DOM, or full-site crawling. Eleven of the SE Ranking skills opportunistically use it; all degrade gracefully when it's absent.
-- **Optional:** the [Google APIs extension](#google-apis-real-cwv-gsc-ga4-youtube-keyword-planner) for the `seo-google` skill (GSC, PSI, CrUX, GA4, etc.). Higher tiers also feed real impressions/clicks/CWV/conversions into `seo-page`, `seo-drift`, `seo-technical-audit`, `seo-content-audit`, and `seo-plan`.
-
-## Install
-
-Two install paths. **The marketplace install (Option 1) is sufficient for 21 of 22 skills** — every skill that's pure SKILL.md content. **The manual install (Option 2) is required for `seo-google`** (which ships Python scripts) and for the optional Firecrawl + Google extensions.
-
-| Use case | Path |
-|---|---|
-| Just want the skills, no Python, no MCP wiring | Option 1 (marketplace) |
-| Want `seo-google`, Firecrawl, or any extension | Option 2 (manual install) |
-| Both | Run Option 2 first, then Option 1 — they're additive |
-
-### Option 1: Claude Code plugin marketplace
-
-This repo is a Claude Code plugin marketplace. Add the marketplace once, install the plugin, and Claude Code handles updates for you.
-
-```bash
-# Add the SE Ranking marketplace
-/plugin marketplace add seranking/seo-skills
-
-# Install the plugin
-/plugin install seo-skills@seranking
-```
-
-Skills are namespaced under the plugin. Trigger them with:
-
-```
-/seo-skills:seo-content-brief
-/seo-skills:seo-ai-search-share-of-voice
-```
-
-To update the marketplace later: `/plugin marketplace update seranking`.
-
-### Option 2: Manual install (required for `seo-google` and the Firecrawl extension)
-
-Clones the repo and runs the extension installers (Firecrawl + Google APIs). Mirrors the [`AgriciDaniel/claude-seo`](https://github.com/AgriciDaniel/claude-seo) install model. Requires `git`, `python3` (3.10+), and (for Firecrawl) `node` (20+).
-
-```bash
-git clone --depth 1 https://github.com/seranking/seo-skills.git
-bash seo-skills/install.sh
-```
-
-The installer is **interactive** when run from a terminal — it asks which extensions to install. Accept the defaults (both) and you're done. Re-running the script updates the clone (`git pull --ff-only`) and re-runs whichever extensions you ask for.
-
-<details>
-<summary>One-liner (curl)</summary>
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/seranking/seo-skills/main/install.sh | bash -s -- --all
-```
-
-The `-s -- --all` runs the installer non-interactively with both extensions enabled (Firecrawl + Google). Drop `--all` and use `--firecrawl` / `--google` individually, or `--no-extensions` to clone only.
-
-Prefer to review the script before running?
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/seranking/seo-skills/main/install.sh > install.sh
-cat install.sh   # review
-bash install.sh  # run when satisfied
-rm install.sh
-```
-
-The installer clones to `~/.local/share/seo-skills` by default. Override with `--target /path/to/dir`.
-
-</details>
-
-After Option 2 completes, you still need Option 1 (or one of Options 4–7 below) so Claude Code can find the skill files. The two are additive: Option 2 wires your *environment* (MCP servers, pip packages, `~/.config/seo-skills/`); Option 1 wires your *plugin* (skill files, slash commands).
-
-### Option 3: Claude Cowork (Claude Desktop)
-
-In the Claude Desktop app, Cowork installs plugins from the same marketplace through a UI flow rather than a slash command:
-
-1. Open **Customize** in the sidebar.
-2. Click **Personal plugin** → **+ Create plugin**.
-3. Click **Add marketplace** and enter `seranking/seo-skills`.
-4. Install the plugin from the marketplace once it loads.
-
-Skills are namespaced the same way as in Claude Code (`seo-skills:seo-content-brief`, etc.) and are available immediately in your next Cowork session.
-
-### Option 4: Local plugin development mode
-
-```bash
-# Clone the repo
-git clone https://github.com/seranking/seo-skills.git
-
-# Load the plugin directly from the cloned directory
-claude --plugin-dir ./seo-skills
-```
-
-### Option 5: Copy individual skills
-
-```bash
-# Clone the repo
-git clone https://github.com/seranking/seo-skills.git
-
-# Copy a single skill to your user-scoped skills directory
-cp -r seo-skills/skills/seo-content-brief ~/.claude/skills/
-
-# Or copy all of them
-cp -r seo-skills/skills/* ~/.claude/skills/
-```
-
-Skills copied this way are not namespaced. Trigger them directly by description match.
-
-### Option 6: Project-scoped install
-
-Copy into a specific project's `.claude/skills/` directory to make the skills available only when Claude Code runs in that project.
-
-```bash
-cp -r seo-skills/skills/* /path/to/your/project/.claude/skills/
-```
-
-### Option 7: Claude API
-
-Upload any skill as a zip to the Claude API via the `/v1/skills` endpoints. See [Anthropic's Skills API guide](https://platform.claude.com/docs/en/build-with-claude/skills-guide).
-
 ## Optional extensions
 
 Some skills work best when paired with optional MCP servers or Python toolchains beyond SE Ranking. Each extension is opt-in — the skills that use it degrade gracefully when it's absent (the affected sections emit `(skipped — extension not installed)` notes rather than failing the run).
 
-The fastest way to install both extensions is the top-level `install.sh` ([Install Option 2](#option-2-manual-install-required-for-seo-google-and-the-firecrawl-extension)). The per-extension scripts below are equivalent — use them when you only want one of the two, or when you've already cloned the repo and want to install/re-install a single extension without re-running the wrapper.
+The fastest way to install both extensions is the top-level `install.sh` ([Install option 3](#3-manual-install-only-if-you-want-seo-google-or-the-optional-extensions)). The per-extension scripts below are equivalent — use them when you only want one of the two, or when you've already cloned the repo and want to install/re-install a single extension without re-running the wrapper.
 
 ### Firecrawl (raw HTML, JSON-LD, JS rendering, site crawl)
 

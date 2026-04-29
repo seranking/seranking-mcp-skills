@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. Format based on Keep a Changelog.
 
+## [2.5.2] — 2026-04-29
+
+README restructure for non-technical users. Install moved above the skills table (was below — readers had to scroll past 22 rows to find install instructions). Install reduced from 7 options to 3, ordered by friendliness: Claude Desktop (Cowork) first, Claude Code (slash commands) second, manual install (only for `seo-google` and extensions) third.
+
+### Changed
+- README ordering: `## Install` now precedes `## Skills`. Reasoning: install instructions are the primary call-to-action; the skills catalogue is the secondary "what's in the box" reference. Old order forced readers to skim past 22 skill rows to find install steps.
+- Install options trimmed: 7 → 3. Dropped (as standalone options): Local plugin development mode, Copy individual skills, Project-scoped install, Claude API. The first three were power-user variants of the marketplace install; the API path is one paragraph that didn't earn a top-level slot. Anyone needing those paths can read the existing `--plugin-dir` / `cp -r` patterns in the relevant skill folders or the Claude Code docs.
+- Install order changed: Claude Desktop (Cowork) → Claude Code → Manual install. Cowork promoted from option 3 to option 1 because it's a UI flow with no terminal commands — friendliest path for non-technical users.
+- Manual install (option 3) explicitly framed as "only if you want `seo-google` or the optional extensions" — most users will skip it.
+- "Connect SE Ranking" carved out as its own subsection at the bottom of `## Install`. Applies to all install paths and reads as the natural next step after the chosen install completes.
+- `## Prerequisites` section dropped. SE Ranking connection is now in Install; the optional Firecrawl/Google extensions are documented under `## Optional extensions`. The "Claude Code OR Cowork OR API OR Claude.ai" enumeration that was in Prerequisites is implicit in the three install options.
+- Internal anchor in `## Optional extensions` updated to point at the renumbered manual-install heading.
+- All three version strings bumped to 2.5.2.
+
+### Why this is a 2.5.2 (not 2.6.0)
+Pure README restructure. No skill behavior changes, no install.sh changes, no config-shape changes. Existing users on 2.5.1 are unaffected.
+
 ## [2.5.1] — 2026-04-29
 
 Adds a top-level `install.sh` so the cold-start install path is a single command, and clarifies the README's split between marketplace install (skills only — sufficient for 21 of 22 skills) and manual install (required for `seo-google` and the Firecrawl extension). Surfaced by a sharp question: the v2.5.0 walkthrough told users to `bash extensions/.../install.sh` without ever telling them to clone the repo first.
