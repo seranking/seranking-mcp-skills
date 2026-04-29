@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. Format based on Keep a Changelog.
 
+## [2.5.1] — 2026-04-29
+
+Adds a top-level `install.sh` so the cold-start install path is a single command, and clarifies the README's split between marketplace install (skills only — sufficient for 21 of 22 skills) and manual install (required for `seo-google` and the Firecrawl extension). Surfaced by a sharp question: the v2.5.0 walkthrough told users to `bash extensions/.../install.sh` without ever telling them to clone the repo first.
+
+### Added
+- **`install.sh`** at repo root. Detects whether it's running from inside a clone vs needing to clone (default target `~/.local/share/seo-skills`, override via `--target`). Verifies `git`, `python3` 3.10+. Runs the chosen extension installers. Interactive when stdin is a TTY (asks Y/N for Firecrawl + Google); non-interactive when piped (skips extensions unless `--firecrawl` / `--google` / `--all` is passed). Reads prompts from `/dev/tty` so `curl ... | bash` works under a real terminal. Idempotent (re-running pulls latest + re-runs requested extensions).
+- README "Option 2: Manual install (required for `seo-google` and the Firecrawl extension)" section. Shows the `git clone + bash install.sh` form and a `<details>`-collapsed curl one-liner: `curl -fsSL .../install.sh | bash -s -- --all`. Mirrors the [`AgriciDaniel/claude-seo`](https://github.com/AgriciDaniel/claude-seo) install pattern.
+- README install-path TL;DR table at the top of the Install section: marketplace install for SKILL.md-only skills, manual install for `seo-google` + extensions, both for users who want everything.
+
+### Changed
+- README install options renumbered: Cowork moved to Option 3 (was 2), Local plugin development to Option 4 (was 3), Copy individual skills to Option 5 (was 4), Project-scoped to Option 6 (was 5), Claude API to Option 7 (was 6). The new Option 2 slots in just after the marketplace install.
+- README "Optional extensions" intro now points to the top-level `install.sh` as the fastest path; per-extension scripts remain documented for one-off installs.
+- README repo-layout block now lists `install.sh` at the root.
+- All three version strings bumped to 2.5.1.
+
+### Why this is a 2.5.1 (not 2.6.0)
+Pure docs + install ergonomics. No skill behavior changes, no new APIs, no config-shape changes. Existing users on 2.5.0 are unaffected unless they re-run the installer, which is idempotent.
+
 ## [2.5.0] — 2026-04-29
 
 Adds `seo-google` — direct access to Google's own SEO data (GSC Search Analytics + URL Inspection + Sitemaps, PageSpeed Insights v5, CrUX field data + 25-week history, Indexing API v3, GA4 Data API, YouTube Data v3, Cloud Natural Language, Knowledge Graph Search, Web Risk, Google Ads Keyword Planner) plus a PDF/HTML/XLSX report generator. This is the catalogue's first Python-script skill — earlier skills are SKILL.md only.
