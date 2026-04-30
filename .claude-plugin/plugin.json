@@ -1,7 +1,7 @@
 {
   "name": "seo-skills",
   "description": "Claude SEO Skills for the SE Ranking MCP server. Turns raw API data into finished deliverables across keyword research, content briefing, page intelligence, technical and content audits, structured data, drift monitoring, SXO diagnostics, competitive analysis, paid search, AI-search optimization, sitemap analysis, subdomain mapping, content opportunity mining, strategic roadmap planning, and Google APIs (GSC, PSI, CrUX, Indexing, GA4, YouTube, NLP).",
-  "version": "2.5.3",
+  "version": "2.6.0",
   "author": {
     "name": "SE Ranking",
     "email": "api@seranking.com",
@@ -10,6 +10,12 @@
   "homepage": "https://github.com/seranking/seo-skills",
   "repository": "https://github.com/seranking/seo-skills",
   "license": "MIT",
+  "mcpServers": {
+    "se-ranking": {
+      "type": "http",
+      "url": "https://api.seranking.com/mcp"
+    }
+  },
   "keywords": [
     "seo",
     "mcp",

@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Official Claude Code plugin marketplace from SE Ranking. Plugins built on top of the SE Ranking SEO Data API MCP server.",
-    "version": "2.5.3"
+    "version": "2.6.0"
   },
   "plugins": [
     {
       "name": "seo-skills",
       "source": "./",
       "description": "Claude SEO Skills for the SE Ranking MCP server. Keyword research, content briefing, page intelligence, technical and content audits, structured data, drift monitoring, SXO diagnostics, competitive analysis, paid search, AI-search optimization, sitemap analysis, subdomain mapping, content opportunity mining, strategic roadmap planning, and Google APIs (GSC, PSI, CrUX, Indexing, GA4, YouTube, NLP).",
-      "version": "2.5.3",
+      "version": "2.6.0",
       "author": {
         "name": "SE Ranking",
         "email": "api@seranking.com"

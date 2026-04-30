@@ -56,13 +56,20 @@ The manual install only wires your *environment* (extensions, Python deps, `~/.c
 
 ### Connect SE Ranking (any install path)
 
-All skills are powered by the SE Ranking remote MCP. Connect it once:
+The SE Ranking remote MCP auto-registers when you install the plugin — there's no separate `claude mcp add` step. On your first session, run `/mcp` and sign in via OAuth. No API token to manage. If you don't have an SE Ranking account yet, [sign up](https://seranking.com/api.html) — API access is required.
+
+<details>
+<summary>Manual fallback (older Claude Code, or troubleshooting)</summary>
+
+If `/mcp` doesn't list `se-ranking` after install — typically because you're on a Claude Code build that pre-dates plugin-bundled MCP servers — register it directly:
 
 ```bash
 claude mcp add --transport http se-ranking https://api.seranking.com/mcp
 ```
 
-Run `/mcp` in your next session and sign in via OAuth. No API token to manage. If you don't have an SE Ranking account yet, [sign up](https://seranking.com/api.html) — API access is required.
+Then run `/mcp` and complete OAuth. (User-scope registrations [outrank plugin-bundled ones](https://code.claude.com/docs/en/mcp#scope-hierarchy-and-precedence), so this safely overrides whatever the plugin shipped with.)
+
+</details>
 
 ## Skills
 

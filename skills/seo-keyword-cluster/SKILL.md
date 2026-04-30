@@ -9,7 +9,7 @@ Transform seed keywords into a prioritised cluster plan: each cluster grouped by
 
 ## Prerequisites
 
-- SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- SE Ranking MCP server connected.
 - User provides: (a) 3 to 20 seed keywords, (b) target market country (default: `us`), and optionally (c) minimum volume threshold (default: 100/mo), (d) maximum KD (default: 60).
 
 ## Process

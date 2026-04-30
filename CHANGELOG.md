@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. Format based on Keep a Changelog.
 
+## [2.6.0] — 2026-04-30
+
+SE Ranking MCP now auto-registers when the plugin is installed. New users no longer need to run `claude mcp add ...` separately — install the plugin, run `/mcp` once for OAuth, done. Existing users are unaffected: per Claude Code's scope-hierarchy rule, user-scope MCP registrations outrank plugin-bundled ones, so any pre-existing `se-ranking` registration silently takes precedence over the plugin-shipped one.
+
+### Added
+- **`mcpServers.se-ranking` in `.claude-plugin/plugin.json`**: declares the remote MCP server inline (`type: "http"`, `url: "https://api.seranking.com/mcp"`). Per [Claude Code's plugin docs](https://code.claude.com/docs/en/plugins-reference#mcp-servers), plugin-bundled MCP servers start automatically when the plugin is enabled. SE Ranking supports OAuth 2.1 with dynamic client registration ([RFC 9628](https://datatracker.ietf.org/doc/html/rfc9628)), so no API token configuration is required — Claude Code handles the OAuth handshake on first `/mcp` call.
+
+### Changed
+- README "Connect SE Ranking" section: reframed as "the MCP auto-registers; just run `/mcp` to OAuth." The previous standalone `claude mcp add ...` command is preserved inside a `<details>` fallback block for users on older Claude Code builds that pre-date plugin-bundled MCP, or for troubleshooting if auto-registration doesn't fire.
+- 7 SKILL.md prerequisite lines simplified: removed the obsolete `with a valid DATA_API_TOKEN` phrasing (`seo-agency-landing-page`, `seo-ai-search-share-of-voice`, `seo-backlink-gap`, `seo-competitor-gap-analysis`, `seo-content-brief`, `seo-keyword-cluster`) and the `(remote OAuth via claude mcp add)` parenthetical (`seo-page`). All 21 affected skills now read uniformly: `- SE Ranking MCP server connected.`
+- All three version strings bumped to 2.6.0 (`plugin.json`, `marketplace.json` ×2).
+
+### Migration
+**Existing users — nothing to do.** Your current `se-ranking` registration (whether user-scope from `claude mcp add` or project-scope from `.mcp.json`) takes precedence over the plugin-bundled one per [Claude Code's scope hierarchy](https://code.claude.com/docs/en/mcp#scope-hierarchy-and-precedence). Claude Code "connects to it once" — no duplicate processes, no port conflicts, no forced re-auth. To consolidate after upgrading, optionally `claude mcp remove se-ranking` and let the plugin-bundled config take over (saves one entry in `~/.claude.json`).
+
+### Why this is a 2.6.0 (not 2.5.4)
+First-install UX change. New users get a one-step install instead of two. Even though existing users are unaffected, the install-flow surface change earns a minor bump. No skill behavior changes.
+
 ## [2.5.3] — 2026-04-29
 
 README slash-command syntax fix. The Claude Code section instructed users to trigger skills with `/seo-skills:seo-content-brief` (plugin-namespaced form). Empirically the prefix isn't required — `/seo-content-brief` works directly. The 2.0.0 CHANGELOG entry that introduced the namespaced form is preserved as historical record (it described what was true at the time), but current docs now show the simpler form.

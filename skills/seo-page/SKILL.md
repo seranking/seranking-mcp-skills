@@ -9,7 +9,7 @@ Show what a single URL ranks for, what traffic it captures, where its weak and s
 
 ## Prerequisites
 
-- SE Ranking MCP server connected (remote OAuth via `claude mcp add`).
+- SE Ranking MCP server connected.
 - Claude's `WebFetch` tool available (for the page-level HTML sense-check).
 - User provides: (a) a target URL, optionally (b) target market country (default: `us`), (c) primary topical keyword (auto-inferred from `<title>` + `<h1>` if not supplied).
 

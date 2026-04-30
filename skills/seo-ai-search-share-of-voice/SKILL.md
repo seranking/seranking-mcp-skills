@@ -9,7 +9,7 @@ Compare AI-search visibility for a target brand against competitors across every
 
 ## Prerequisites
 
-- SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- SE Ranking MCP server connected.
 - User provides: (a) target domain and its brand name, (b) list of competitor domains and brand names, (c) country (default: `us`), and (d) optionally, which engines to analyse (default: all supported: `ai-overview`, `chatgpt`, `perplexity`, `gemini`, `ai-mode`).
 
 ## Process

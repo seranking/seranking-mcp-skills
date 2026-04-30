@@ -189,10 +189,11 @@ echo ""
 echo "     Or for local development against this clone:"
 echo "     claude --plugin-dir $REPO_DIR"
 echo ""
-echo "  2. Connect the SE Ranking remote MCP (powers most skills):"
+echo "  2. The SE Ranking MCP auto-registers when the plugin is installed."
+echo "     Run /mcp on your first Claude Code session to sign in via OAuth."
 echo ""
+echo "     Fallback (older Claude Code, or if /mcp doesn't list se-ranking):"
 echo "     claude mcp add --transport http se-ranking https://api.seranking.com/mcp"
-echo "     # then run /mcp in a session and sign in via OAuth"
 echo ""
 
 if [ "$INSTALL_GOOGLE" -eq 1 ]; then

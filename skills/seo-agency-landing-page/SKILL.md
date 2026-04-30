@@ -9,7 +9,7 @@ Produce a production-ready landing page for an SEO agency offering a free audit 
 
 ## Prerequisites
 
-- SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- SE Ranking MCP server connected.
 - User provides: (a) agency name, (b) target vertical or niche the agency serves (e.g., "SaaS", "local dentists", "DTC ecommerce"), (c) the agency's website or positioning, and optionally (d) a sample client domain to pull real numbers from for case-study copy.
 
 ## Process

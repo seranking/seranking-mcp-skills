@@ -9,7 +9,7 @@ Identify the specific keywords your competitors rank for in the top 20 that your
 
 ## Prerequisites
 
-- SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- SE Ranking MCP server connected.
 - User provides: (a) target domain, (b) 3 to 5 competitor domains (or ask the skill to auto-discover them), (c) market country (default: `us`), and optionally filters (min volume, max KD, intent).
 
 ## Process

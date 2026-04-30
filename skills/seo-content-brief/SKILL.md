@@ -9,7 +9,7 @@ Turn a domain plus a topic intent into a complete content editor brief: target k
 
 ## Prerequisites
 
-- SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- SE Ranking MCP server connected.
 - Claude's `WebFetch` tool available (used for top-3 content teardown).
 - User has provided: (a) target domain, (b) market/country (default: `us`), and optionally (c) a seed topic or intent. If no seed topic is given, discover the best opportunity from the keyword-gap step.
 

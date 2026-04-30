@@ -9,7 +9,7 @@ Produce an actionable link-prospecting list: domains linking to your top competi
 
 ## Prerequisites
 
-- SE Ranking MCP server connected with a valid `DATA_API_TOKEN`.
+- SE Ranking MCP server connected.
 - Claude's `WebFetch` tool available (used for prospect scoring and topical relevance checks).
 - User provides: (a) target domain, (b) 3 to 5 competitor domains, and optionally (c) minimum Domain Trust (default: 25), (d) dofollow-only filter (default: true), (e) minimum intersection count (default: linked by at least 2 of the N competitors).
 
